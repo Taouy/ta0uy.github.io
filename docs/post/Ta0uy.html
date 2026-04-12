@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    
+    <link rel="icon" href="https://github.githubassets.com/favicons/favicon.svg"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="<!DOCTYPE html>
+<html lang='zh-CN'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>个人成长目标管理</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial}
+body{background:#f6f8fb;color:#222;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:20px;margin-bottom:16px}
+.title{font-size:22px;font-weight:700;color:#111;margin-bottom:12px}
+.search-bar{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #e2e8f0;outline:none;font-size:14px;margin-bottom:16px}
+.goal-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;background:#f9fafb;margin-bottom:8px;gap:10px}
+.goal-item.done{background:#e6f7e6}
+.goal-text{flex:1;font-size:14px}
+.goal-meta{display:flex;gap:8px;font-size:12px;color:#666}
+.btn{padding:6px 12px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:500}
+.btn-primary{background:#3b82f6;color:#fff}
+.btn-success{background:#10b981;color:#fff}
+.btn-light{background:#e2e8f0;color:#333}
+.timetable{display:grid;grid-template-columns:80px 1fr;gap:8px;font-size:14px;margin-top:12px}
+.time-item{background:#eff6ff;padding:8px 10px;border-radius:10px;text-align:center;font-weight:600}
+.content-item{background:#f9fafb;padding:8px 12px;border-radius:10px}
+.week-schedule{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.week-tag{padding:8px 12px;background:#f0f9ff;border-radius:12px;font-size:13px;color:#0369a1;font-weight:500}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:none;justify-content:center;align-items:center}
+.modal-content{background:#fff;width:90%;max-width:460px;border-radius:16px;padding:24px}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:16px}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:14px;margin-bottom:6px}
+.form-row input,.form-row textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #e2e8f0;outline:none}
+.modal-buttons{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+</style>
+</head>
+<body>
+<div class='container'>
+
+<div class='header'>
+<h1>个人成长目标管理</h1>
+<div>
+<button class='btn btn-light' id='openModal'>设置目标</button>
+</div>
+</div>
+
+<input type='text' class='search-bar' id='searchInput' placeholder='搜索目标...'>
+
+<div class='card'>
+<div class='title'>今日待完成</div>
+<div id='todayList'>
+</div>
+</div>
+
+<div class='card'>
+<div class='title'>每日时间表</div>
+<div class='timetable'>
+<div class='time-item'>07:00</div><div class='content-item'>起床、洗漱、拉伸</div>
+<div class='time-item'>07:20</div><div class='content-item'>早餐 + 冥想5分钟</div>
+<div class='time-item'>07:40</div><div class='content-item'>通勤</div>
+<div class='time-item'>09:30-18:00</div><div class='content-item'>上班 + 一半时间学习（逆向/SRE/网络编程）</div>
+<div class='time-item'>18:00-18:40</div><div class='content-item'>下班通勤</div>
+<div class='time-item'>18:40-19:40</div><div class='content-item'>晚餐休息</div>
+<div class='time-item'>19:40-20:20</div><div class='content-item'>健身 / 身体修复</div>
+<div class='time-item'>20:20-21:00</div><div class='content-item'>阅读 / 自省</div>
+<div class='time-item'>21:00-22:00</div><div class='content-item'>娱乐（刺客信条/影视）</div>
+<div class='time-item'>22:00-22:30</div><div class='content-item'>护肤、形象整理</div>
+<div class='time-item'>22:30-22:50</div><div class='content-item'>情绪复盘</div>
+<div class='time-item'>23:00</div><div class='content-item'>睡觉</div>
+</div>
+</div>
+
+<div class='card'>
+<div class='title'>每周学习安排</div>
+<div class='week-schedule'>
+<div class='week-tag'>周一/三/五：逆向破解</div>
+<div class='week-tag'>周二/四：SRE + 网络编程</div>
+<div class='week-tag'>周六：AI Coding + 阅读 + 社交</div>
+<div class='week-tag'>周日：放松、健身、总结</div>
+</div>
+</div>
+
+<div class='card'>
+<div class='title'>周期目标总览</div>
+<div style='overflow-x:auto'>
+<table style='width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden'>
+<thead>
+<tr style='background:#eff6ff'>
+<th style='padding:12px;text-align:left'>项目</th>
+<th style='padding:12px;text-align:left'>一周目标</th>
+<th style='padding:12px;text-align:left'>半个月目标</th>
+<th style='padding:12px;text-align:left'>一个月目标</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>逆向破解</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>x64dbg断点、调用栈</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>定位3处校验逻辑</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>完成一次小破解</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>SRE</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>Linux命令、日志</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>排查简单异常</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>自动化脚本</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>网络编程</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>TCP/UDP+抓包</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>Socket Demo</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>分析网络问题</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>健身</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每周3次</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>肩颈好转</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>体态精力提升</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>身体修复</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>坚持护理</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>睡眠颈椎改善</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>不适明显减轻</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>早睡早起</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>23:00睡 7:00起</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>生物钟稳定</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>白天精神充足</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>心态训练</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>烦躁先停10秒</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>快速平复情绪</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>冷静不内耗</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>自省冥想</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每日5分钟复盘</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每周总结</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>稳定觉察习惯</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>交流交友</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>主动联系朋友</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>轻度社交</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>稳定关系</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>文学阅读</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每日20分钟</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>读完半本~1本</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>读完1~2本</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>影视娱乐</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>控制时长</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>看完1部</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>不沉迷</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>刺客信条</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每周2~3次</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>推进主线</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>完成一部</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>AI Coding</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>用AI写脚本</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>完成小工具</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>完成小项目</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>购物改造</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>整理清单</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>购入形象物品</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>外在干净精神</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>情绪调控</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>不冲动不内耗</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>波动减少</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>心态平稳</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class='modal' id='modal'>
+<div class='modal-content'>
+<div class='modal-title'>设置今日目标</div>
+<div class='form-row'>
+<label>目标内容</label>
+<input type='text' id='goalContent' placeholder='输入今天要完成的事'>
+</div>
+<div class='modal-buttons'>
+<button class='btn btn-light' id='closeModal'>取消</button>
+<button class='btn btn-primary' id='saveGoal'>保存</button>
+</div>
+</div>
+</div>
+
+<script>
+const defaultGoals = [
+'完成逆向破解学习30分钟',
+'SRE 命令练习',
+'健身/肩颈拉伸',
+'阅读20分钟',
+'情绪复盘5分钟',
+'早睡23:00前'
+]
+
+const todayList = document.getElementById('todayList')
+const searchInput = document.getElementById('searchInput')
+const modal = document.getElementById('modal')
+const openModal = document.getElementById('openModal')
+const closeModal = document.getElementById('closeModal')
+const saveGoal = document.getElementById('saveGoal')
+const goalContent = document.getElementById('goalContent')
+
+function renderGoals(list){
+todayList.innerHTML = ''
+list.forEach((g,i)=>{
+const item = document.createElement('div')
+item.className = `goal-item ${g.done?'done':''}`
+item.innerHTML = `
+<div class='goal-text'>${g.text}</div>
+<div class='goal-meta'>
+<button class='btn ${g.done?'btn-light':'btn-success'}' onclick='toggleDone(${i})'>${g.done?'已完成':'今日已完成'}</button>
+</div>
+`
+todayList.appendChild(item)
+})
+}
+
+let goals = JSON.parse(localStorage.getItem('myGoals')) || defaultGoals.map(t=>({text:t,done:false}))
+
+function saveToStorage(){
+localStorage.setItem('myGoals',JSON.stringify(goals))
+}
+
+function toggleDone(index){
+goals[index].done = !goals[index].done
+saveToStorage()
+renderGoals(goals)
+}
+
+searchInput.addEventListener('input',(e)=>{
+const kw = e.target.value.toLowerCase()
+const filtered = goals.filter(g=>g.text.toLowerCase().includes(kw))
+renderGoals(filtered)
+})
+
+openModal.onclick = ()=>{modal.style.display='flex'}
+closeModal.onclick = ()=>{modal.style.display='none'}
+saveGoal.onclick = ()=>{
+const t = goalContent.value.trim()
+if(!t)return
+goals.unshift({text:t,done:false})
+saveToStorage()
+renderGoals(goals)
+goalContent.value=''
+modal.style.display='none'
+}
+
+renderGoals(goals)
+</script>
+</body>
+</html>。">
+<meta property="og:title" content="Ta0uy">
+<meta property="og:description" content="<!DOCTYPE html>
+<html lang='zh-CN'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>个人成长目标管理</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial}
+body{background:#f6f8fb;color:#222;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:20px;margin-bottom:16px}
+.title{font-size:22px;font-weight:700;color:#111;margin-bottom:12px}
+.search-bar{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #e2e8f0;outline:none;font-size:14px;margin-bottom:16px}
+.goal-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;background:#f9fafb;margin-bottom:8px;gap:10px}
+.goal-item.done{background:#e6f7e6}
+.goal-text{flex:1;font-size:14px}
+.goal-meta{display:flex;gap:8px;font-size:12px;color:#666}
+.btn{padding:6px 12px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:500}
+.btn-primary{background:#3b82f6;color:#fff}
+.btn-success{background:#10b981;color:#fff}
+.btn-light{background:#e2e8f0;color:#333}
+.timetable{display:grid;grid-template-columns:80px 1fr;gap:8px;font-size:14px;margin-top:12px}
+.time-item{background:#eff6ff;padding:8px 10px;border-radius:10px;text-align:center;font-weight:600}
+.content-item{background:#f9fafb;padding:8px 12px;border-radius:10px}
+.week-schedule{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.week-tag{padding:8px 12px;background:#f0f9ff;border-radius:12px;font-size:13px;color:#0369a1;font-weight:500}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:none;justify-content:center;align-items:center}
+.modal-content{background:#fff;width:90%;max-width:460px;border-radius:16px;padding:24px}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:16px}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:14px;margin-bottom:6px}
+.form-row input,.form-row textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #e2e8f0;outline:none}
+.modal-buttons{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+</style>
+</head>
+<body>
+<div class='container'>
+
+<div class='header'>
+<h1>个人成长目标管理</h1>
+<div>
+<button class='btn btn-light' id='openModal'>设置目标</button>
+</div>
+</div>
+
+<input type='text' class='search-bar' id='searchInput' placeholder='搜索目标...'>
+
+<div class='card'>
+<div class='title'>今日待完成</div>
+<div id='todayList'>
+</div>
+</div>
+
+<div class='card'>
+<div class='title'>每日时间表</div>
+<div class='timetable'>
+<div class='time-item'>07:00</div><div class='content-item'>起床、洗漱、拉伸</div>
+<div class='time-item'>07:20</div><div class='content-item'>早餐 + 冥想5分钟</div>
+<div class='time-item'>07:40</div><div class='content-item'>通勤</div>
+<div class='time-item'>09:30-18:00</div><div class='content-item'>上班 + 一半时间学习（逆向/SRE/网络编程）</div>
+<div class='time-item'>18:00-18:40</div><div class='content-item'>下班通勤</div>
+<div class='time-item'>18:40-19:40</div><div class='content-item'>晚餐休息</div>
+<div class='time-item'>19:40-20:20</div><div class='content-item'>健身 / 身体修复</div>
+<div class='time-item'>20:20-21:00</div><div class='content-item'>阅读 / 自省</div>
+<div class='time-item'>21:00-22:00</div><div class='content-item'>娱乐（刺客信条/影视）</div>
+<div class='time-item'>22:00-22:30</div><div class='content-item'>护肤、形象整理</div>
+<div class='time-item'>22:30-22:50</div><div class='content-item'>情绪复盘</div>
+<div class='time-item'>23:00</div><div class='content-item'>睡觉</div>
+</div>
+</div>
+
+<div class='card'>
+<div class='title'>每周学习安排</div>
+<div class='week-schedule'>
+<div class='week-tag'>周一/三/五：逆向破解</div>
+<div class='week-tag'>周二/四：SRE + 网络编程</div>
+<div class='week-tag'>周六：AI Coding + 阅读 + 社交</div>
+<div class='week-tag'>周日：放松、健身、总结</div>
+</div>
+</div>
+
+<div class='card'>
+<div class='title'>周期目标总览</div>
+<div style='overflow-x:auto'>
+<table style='width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden'>
+<thead>
+<tr style='background:#eff6ff'>
+<th style='padding:12px;text-align:left'>项目</th>
+<th style='padding:12px;text-align:left'>一周目标</th>
+<th style='padding:12px;text-align:left'>半个月目标</th>
+<th style='padding:12px;text-align:left'>一个月目标</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>逆向破解</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>x64dbg断点、调用栈</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>定位3处校验逻辑</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>完成一次小破解</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>SRE</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>Linux命令、日志</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>排查简单异常</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>自动化脚本</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>网络编程</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>TCP/UDP+抓包</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>Socket Demo</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>分析网络问题</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>健身</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每周3次</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>肩颈好转</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>体态精力提升</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>身体修复</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>坚持护理</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>睡眠颈椎改善</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>不适明显减轻</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>早睡早起</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>23:00睡 7:00起</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>生物钟稳定</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>白天精神充足</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>心态训练</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>烦躁先停10秒</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>快速平复情绪</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>冷静不内耗</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>自省冥想</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每日5分钟复盘</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每周总结</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>稳定觉察习惯</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>交流交友</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>主动联系朋友</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>轻度社交</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>稳定关系</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>文学阅读</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每日20分钟</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>读完半本~1本</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>读完1~2本</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>影视娱乐</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>控制时长</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>看完1部</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>不沉迷</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>刺客信条</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>每周2~3次</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>推进主线</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>完成一部</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>AI Coding</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>用AI写脚本</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>完成小工具</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>完成小项目</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>购物改造</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>整理清单</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>购入形象物品</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>外在干净精神</td></tr>
+<tr><td style='padding:10px;border-bottom:1px solid #f0f0f0'>情绪调控</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>不冲动不内耗</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>波动减少</td><td style='padding:10px;border-bottom:1px solid #f0f0f0'>心态平稳</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<div class='modal' id='modal'>
+<div class='modal-content'>
+<div class='modal-title'>设置今日目标</div>
+<div class='form-row'>
+<label>目标内容</label>
+<input type='text' id='goalContent' placeholder='输入今天要完成的事'>
+</div>
+<div class='modal-buttons'>
+<button class='btn btn-light' id='closeModal'>取消</button>
+<button class='btn btn-primary' id='saveGoal'>保存</button>
+</div>
+</div>
+</div>
+
+<script>
+const defaultGoals = [
+'完成逆向破解学习30分钟',
+'SRE 命令练习',
+'健身/肩颈拉伸',
+'阅读20分钟',
+'情绪复盘5分钟',
+'早睡23:00前'
+]
+
+const todayList = document.getElementById('todayList')
+const searchInput = document.getElementById('searchInput')
+const modal = document.getElementById('modal')
+const openModal = document.getElementById('openModal')
+const closeModal = document.getElementById('closeModal')
+const saveGoal = document.getElementById('saveGoal')
+const goalContent = document.getElementById('goalContent')
+
+function renderGoals(list){
+todayList.innerHTML = ''
+list.forEach((g,i)=>{
+const item = document.createElement('div')
+item.className = `goal-item ${g.done?'done':''}`
+item.innerHTML = `
+<div class='goal-text'>${g.text}</div>
+<div class='goal-meta'>
+<button class='btn ${g.done?'btn-light':'btn-success'}' onclick='toggleDone(${i})'>${g.done?'已完成':'今日已完成'}</button>
+</div>
+`
+todayList.appendChild(item)
+})
+}
+
+let goals = JSON.parse(localStorage.getItem('myGoals')) || defaultGoals.map(t=>({text:t,done:false}))
+
+function saveToStorage(){
+localStorage.setItem('myGoals',JSON.stringify(goals))
+}
+
+function toggleDone(index){
+goals[index].done = !goals[index].done
+saveToStorage()
+renderGoals(goals)
+}
+
+searchInput.addEventListener('input',(e)=>{
+const kw = e.target.value.toLowerCase()
+const filtered = goals.filter(g=>g.text.toLowerCase().includes(kw))
+renderGoals(filtered)
+})
+
+openModal.onclick = ()=>{modal.style.display='flex'}
+closeModal.onclick = ()=>{modal.style.display='none'}
+saveGoal.onclick = ()=>{
+const t = goalContent.value.trim()
+if(!t)return
+goals.unshift({text:t,done:false})
+saveToStorage()
+renderGoals(goals)
+goalContent.value=''
+modal.style.display='none'
+}
+
+renderGoals(goals)
+</script>
+</body>
+</html>。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://taouy.github.io/post/Ta0uy.html">
+<meta property="og:image" content="https://github.githubassets.com/favicons/favicon.svg">
+<title>Ta0uy</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">Ta0uy</h1>
+<div class="title-right">
+    <a href="https://taouy.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/Taouy/taouy.github.io/issues/2" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody">
+
+
+
+
+&lt;title&gt;个人成长目标管理&lt;/title&gt;
+&lt;style&gt;
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial}
+body{background:#f6f8fb;color:#222;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:20px;margin-bottom:16px}
+.title{font-size:22px;font-weight:700;color:#111;margin-bottom:12px}
+.search-bar{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #e2e8f0;outline:none;font-size:14px;margin-bottom:16px}
+.goal-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;background:#f9fafb;margin-bottom:8px;gap:10px}
+.goal-item.done{background:#e6f7e6}
+.goal-text{flex:1;font-size:14px}
+.goal-meta{display:flex;gap:8px;font-size:12px;color:#666}
+.btn{padding:6px 12px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:500}
+.btn-primary{background:#3b82f6;color:#fff}
+.btn-success{background:#10b981;color:#fff}
+.btn-light{background:#e2e8f0;color:#333}
+.timetable{display:grid;grid-template-columns:80px 1fr;gap:8px;font-size:14px;margin-top:12px}
+.time-item{background:#eff6ff;padding:8px 10px;border-radius:10px;text-align:center;font-weight:600}
+.content-item{background:#f9fafb;padding:8px 12px;border-radius:10px}
+.week-schedule{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.week-tag{padding:8px 12px;background:#f0f9ff;border-radius:12px;font-size:13px;color:#0369a1;font-weight:500}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:none;justify-content:center;align-items:center}
+.modal-content{background:#fff;width:90%;max-width:460px;border-radius:16px;padding:24px}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:16px}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:14px;margin-bottom:6px}
+.form-row input,.form-row textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #e2e8f0;outline:none}
+.modal-buttons{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+&lt;/style&gt;
+
+
+<div>
+<div>
+<h1>个人成长目标管理</h1>
+<div>
+设置目标
+</div>
+</div>
+
+<div>
+<div>今日待完成</div>
+<div id="user-content-todaylist">
+</div>
+</div>
+<div>
+<div>每日时间表</div>
+<div>
+<div>07:00</div><div>起床、洗漱、拉伸</div>
+<div>07:20</div><div>早餐 + 冥想5分钟</div>
+<div>07:40</div><div>通勤</div>
+<div>09:30-18:00</div><div>上班 + 一半时间学习（逆向/SRE/网络编程）</div>
+<div>18:00-18:40</div><div>下班通勤</div>
+<div>18:40-19:40</div><div>晚餐休息</div>
+<div>19:40-20:20</div><div>健身 / 身体修复</div>
+<div>20:20-21:00</div><div>阅读 / 自省</div>
+<div>21:00-22:00</div><div>娱乐（刺客信条/影视）</div>
+<div>22:00-22:30</div><div>护肤、形象整理</div>
+<div>22:30-22:50</div><div>情绪复盘</div>
+<div>23:00</div><div>睡觉</div>
+</div>
+</div>
+<div>
+<div>每周学习安排</div>
+<div>
+<div>周一/三/五：逆向破解</div>
+<div>周二/四：SRE + 网络编程</div>
+<div>周六：AI Coding + 阅读 + 社交</div>
+<div>周日：放松、健身、总结</div>
+</div>
+</div>
+<div>
+<div>周期目标总览</div>
+<div>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>项目</th>
+<th>一周目标</th>
+<th>半个月目标</th>
+<th>一个月目标</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>逆向破解</td><td>x64dbg断点、调用栈</td><td>定位3处校验逻辑</td><td>完成一次小破解</td></tr>
+<tr><td>SRE</td><td>Linux命令、日志</td><td>排查简单异常</td><td>自动化脚本</td></tr>
+<tr><td>网络编程</td><td>TCP/UDP+抓包</td><td>Socket Demo</td><td>分析网络问题</td></tr>
+<tr><td>健身</td><td>每周3次</td><td>肩颈好转</td><td>体态精力提升</td></tr>
+<tr><td>身体修复</td><td>坚持护理</td><td>睡眠颈椎改善</td><td>不适明显减轻</td></tr>
+<tr><td>早睡早起</td><td>23:00睡 7:00起</td><td>生物钟稳定</td><td>白天精神充足</td></tr>
+<tr><td>心态训练</td><td>烦躁先停10秒</td><td>快速平复情绪</td><td>冷静不内耗</td></tr>
+<tr><td>自省冥想</td><td>每日5分钟复盘</td><td>每周总结</td><td>稳定觉察习惯</td></tr>
+<tr><td>交流交友</td><td>主动联系朋友</td><td>轻度社交</td><td>稳定关系</td></tr>
+<tr><td>文学阅读</td><td>每日20分钟</td><td>读完半本~1本</td><td>读完1~2本</td></tr>
+<tr><td>影视娱乐</td><td>控制时长</td><td>看完1部</td><td>不沉迷</td></tr>
+<tr><td>刺客信条</td><td>每周2~3次</td><td>推进主线</td><td>完成一部</td></tr>
+<tr><td>AI Coding</td><td>用AI写脚本</td><td>完成小工具</td><td>完成小项目</td></tr>
+<tr><td>购物改造</td><td>整理清单</td><td>购入形象物品</td><td>外在干净精神</td></tr>
+<tr><td>情绪调控</td><td>不冲动不内耗</td><td>波动减少</td><td>心态平稳</td></tr>
+</tbody>
+</table></markdown-accessiblity-table>
+</div>
+</div>
+</div>
+<div id="user-content-modal">
+<div>
+<div>设置今日目标</div>
+<div>
+目标内容
+
+</div>
+<div>
+取消
+保存
+</div>
+</div>
+</div>
+&lt;script&gt;
+const defaultGoals = [
+"完成逆向破解学习30分钟",
+"SRE 命令练习",
+"健身/肩颈拉伸",
+"阅读20分钟",
+"情绪复盘5分钟",
+"早睡23:00前"
+]
+
+const todayList = document.getElementById('todayList')
+const searchInput = document.getElementById('searchInput')
+const modal = document.getElementById('modal')
+const openModal = document.getElementById('openModal')
+const closeModal = document.getElementById('closeModal')
+const saveGoal = document.getElementById('saveGoal')
+const goalContent = document.getElementById('goalContent')
+
+function renderGoals(list){
+todayList.innerHTML = ''
+list.forEach((g,i)=&gt;{
+const item = document.createElement('div')
+item.className = `goal-item ${g.done?'done':''}`
+item.innerHTML = `
+<div>${g.text}</div>
+<div>
+${g.done?'已完成':'今日已完成'}
+</div>
+`
+todayList.appendChild(item)
+})
+}
+
+let goals = JSON.parse(localStorage.getItem('myGoals')) || defaultGoals.map(t=&gt;({text:t,done:false}))
+
+function saveToStorage(){
+localStorage.setItem('myGoals',JSON.stringify(goals))
+}
+
+function toggleDone(index){
+goals[index].done = !goals[index].done
+saveToStorage()
+renderGoals(goals)
+}
+
+searchInput.addEventListener('input',(e)=&gt;{
+const kw = e.target.value.toLowerCase()
+const filtered = goals.filter(g=&gt;g.text.toLowerCase().includes(kw))
+renderGoals(filtered)
+})
+
+openModal.onclick = ()=&gt;{modal.style.display='flex'}
+closeModal.onclick = ()=&gt;{modal.style.display='none'}
+saveGoal.onclick = ()=&gt;{
+const t = goalContent.value.trim()
+if(!t)return
+goals.unshift({text:t,done:false})
+saveToStorage()
+renderGoals(goals)
+goalContent.value=''
+modal.style.display='none'
+}
+
+renderGoals(goals)
+&lt;/script&gt;
+
+</div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://taouy.github.io">Blog Title</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if(""!=""){
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行 "+diffDay+" 天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.disabled=true;
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","Taouy/taouy.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+
+
+
+</script>
+
+
+</html>

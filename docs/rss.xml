@@ -1,4 +1,201 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://taouy.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://taouy.github.io</link></image><lastBuildDate>Sun, 05 Apr 2026 15:54:53 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>test</title><link>https://taouy.github.io/post/test.html</link><description>测试
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Blog Title</title><link>https://taouy.github.io</link><description>Blog description</description><copyright>Blog Title</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://taouy.github.io</link></image><lastBuildDate>Sun, 12 Apr 2026 17:21:50 +0000</lastBuildDate><managingEditor>Blog Title</managingEditor><ttl>60</ttl><webMaster>Blog Title</webMaster><item><title>Ta0uy</title><link>https://taouy.github.io/post/Ta0uy.html</link><description>&lt;!DOCTYPE html&gt;
+&lt;html lang='zh-CN'&gt;
+&lt;head&gt;
+&lt;meta charset='utf-8'&gt;
+&lt;meta name='viewport' content='width=device-width, initial-scale=1'&gt;
+&lt;title&gt;个人成长目标管理&lt;/title&gt;
+&lt;style&gt;
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial}
+body{background:#f6f8fb;color:#222;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:20px;margin-bottom:16px}
+.title{font-size:22px;font-weight:700;color:#111;margin-bottom:12px}
+.search-bar{width:100%;padding:10px 14px;border-radius:12px;border:1px solid #e2e8f0;outline:none;font-size:14px;margin-bottom:16px}
+.goal-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:12px;background:#f9fafb;margin-bottom:8px;gap:10px}
+.goal-item.done{background:#e6f7e6}
+.goal-text{flex:1;font-size:14px}
+.goal-meta{display:flex;gap:8px;font-size:12px;color:#666}
+.btn{padding:6px 12px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:500}
+.btn-primary{background:#3b82f6;color:#fff}
+.btn-success{background:#10b981;color:#fff}
+.btn-light{background:#e2e8f0;color:#333}
+.timetable{display:grid;grid-template-columns:80px 1fr;gap:8px;font-size:14px;margin-top:12px}
+.time-item{background:#eff6ff;padding:8px 10px;border-radius:10px;text-align:center;font-weight:600}
+.content-item{background:#f9fafb;padding:8px 12px;border-radius:10px}
+.week-schedule{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.week-tag{padding:8px 12px;background:#f0f9ff;border-radius:12px;font-size:13px;color:#0369a1;font-weight:500}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:none;justify-content:center;align-items:center}
+.modal-content{background:#fff;width:90%;max-width:460px;border-radius:16px;padding:24px}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:16px}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:14px;margin-bottom:6px}
+.form-row input,.form-row textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #e2e8f0;outline:none}
+.modal-buttons{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class='container'&gt;
+
+&lt;div class='header'&gt;
+&lt;h1&gt;个人成长目标管理&lt;/h1&gt;
+&lt;div&gt;
+&lt;button class='btn btn-light' id='openModal'&gt;设置目标&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;input type='text' class='search-bar' id='searchInput' placeholder='搜索目标...'&gt;
+
+&lt;div class='card'&gt;
+&lt;div class='title'&gt;今日待完成&lt;/div&gt;
+&lt;div id='todayList'&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class='card'&gt;
+&lt;div class='title'&gt;每日时间表&lt;/div&gt;
+&lt;div class='timetable'&gt;
+&lt;div class='time-item'&gt;07:00&lt;/div&gt;&lt;div class='content-item'&gt;起床、洗漱、拉伸&lt;/div&gt;
+&lt;div class='time-item'&gt;07:20&lt;/div&gt;&lt;div class='content-item'&gt;早餐 + 冥想5分钟&lt;/div&gt;
+&lt;div class='time-item'&gt;07:40&lt;/div&gt;&lt;div class='content-item'&gt;通勤&lt;/div&gt;
+&lt;div class='time-item'&gt;09:30-18:00&lt;/div&gt;&lt;div class='content-item'&gt;上班 + 一半时间学习（逆向/SRE/网络编程）&lt;/div&gt;
+&lt;div class='time-item'&gt;18:00-18:40&lt;/div&gt;&lt;div class='content-item'&gt;下班通勤&lt;/div&gt;
+&lt;div class='time-item'&gt;18:40-19:40&lt;/div&gt;&lt;div class='content-item'&gt;晚餐休息&lt;/div&gt;
+&lt;div class='time-item'&gt;19:40-20:20&lt;/div&gt;&lt;div class='content-item'&gt;健身 / 身体修复&lt;/div&gt;
+&lt;div class='time-item'&gt;20:20-21:00&lt;/div&gt;&lt;div class='content-item'&gt;阅读 / 自省&lt;/div&gt;
+&lt;div class='time-item'&gt;21:00-22:00&lt;/div&gt;&lt;div class='content-item'&gt;娱乐（刺客信条/影视）&lt;/div&gt;
+&lt;div class='time-item'&gt;22:00-22:30&lt;/div&gt;&lt;div class='content-item'&gt;护肤、形象整理&lt;/div&gt;
+&lt;div class='time-item'&gt;22:30-22:50&lt;/div&gt;&lt;div class='content-item'&gt;情绪复盘&lt;/div&gt;
+&lt;div class='time-item'&gt;23:00&lt;/div&gt;&lt;div class='content-item'&gt;睡觉&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class='card'&gt;
+&lt;div class='title'&gt;每周学习安排&lt;/div&gt;
+&lt;div class='week-schedule'&gt;
+&lt;div class='week-tag'&gt;周一/三/五：逆向破解&lt;/div&gt;
+&lt;div class='week-tag'&gt;周二/四：SRE + 网络编程&lt;/div&gt;
+&lt;div class='week-tag'&gt;周六：AI Coding + 阅读 + 社交&lt;/div&gt;
+&lt;div class='week-tag'&gt;周日：放松、健身、总结&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class='card'&gt;
+&lt;div class='title'&gt;周期目标总览&lt;/div&gt;
+&lt;div style='overflow-x:auto'&gt;
+&lt;table style='width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden'&gt;
+&lt;thead&gt;
+&lt;tr style='background:#eff6ff'&gt;
+&lt;th style='padding:12px;text-align:left'&gt;项目&lt;/th&gt;
+&lt;th style='padding:12px;text-align:left'&gt;一周目标&lt;/th&gt;
+&lt;th style='padding:12px;text-align:left'&gt;半个月目标&lt;/th&gt;
+&lt;th style='padding:12px;text-align:left'&gt;一个月目标&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;逆向破解&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;x64dbg断点、调用栈&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;定位3处校验逻辑&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;完成一次小破解&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;SRE&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;Linux命令、日志&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;排查简单异常&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;自动化脚本&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;网络编程&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;TCP/UDP+抓包&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;Socket Demo&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;分析网络问题&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;健身&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;每周3次&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;肩颈好转&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;体态精力提升&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;身体修复&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;坚持护理&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;睡眠颈椎改善&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;不适明显减轻&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;早睡早起&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;23:00睡 7:00起&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;生物钟稳定&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;白天精神充足&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;心态训练&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;烦躁先停10秒&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;快速平复情绪&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;冷静不内耗&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;自省冥想&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;每日5分钟复盘&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;每周总结&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;稳定觉察习惯&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;交流交友&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;主动联系朋友&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;轻度社交&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;稳定关系&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;文学阅读&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;每日20分钟&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;读完半本~1本&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;读完1~2本&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;影视娱乐&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;控制时长&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;看完1部&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;不沉迷&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;刺客信条&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;每周2~3次&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;推进主线&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;完成一部&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;AI Coding&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;用AI写脚本&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;完成小工具&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;完成小项目&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;购物改造&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;整理清单&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;购入形象物品&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;外在干净精神&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;情绪调控&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;不冲动不内耗&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;波动减少&lt;/td&gt;&lt;td style='padding:10px;border-bottom:1px solid #f0f0f0'&gt;心态平稳&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class='modal' id='modal'&gt;
+&lt;div class='modal-content'&gt;
+&lt;div class='modal-title'&gt;设置今日目标&lt;/div&gt;
+&lt;div class='form-row'&gt;
+&lt;label&gt;目标内容&lt;/label&gt;
+&lt;input type='text' id='goalContent' placeholder='输入今天要完成的事'&gt;
+&lt;/div&gt;
+&lt;div class='modal-buttons'&gt;
+&lt;button class='btn btn-light' id='closeModal'&gt;取消&lt;/button&gt;
+&lt;button class='btn btn-primary' id='saveGoal'&gt;保存&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+const defaultGoals = [
+'完成逆向破解学习30分钟',
+'SRE 命令练习',
+'健身/肩颈拉伸',
+'阅读20分钟',
+'情绪复盘5分钟',
+'早睡23:00前'
+]
+
+const todayList = document.getElementById('todayList')
+const searchInput = document.getElementById('searchInput')
+const modal = document.getElementById('modal')
+const openModal = document.getElementById('openModal')
+const closeModal = document.getElementById('closeModal')
+const saveGoal = document.getElementById('saveGoal')
+const goalContent = document.getElementById('goalContent')
+
+function renderGoals(list){
+todayList.innerHTML = ''
+list.forEach((g,i)=&gt;{
+const item = document.createElement('div')
+item.className = `goal-item ${g.done?'done':''}`
+item.innerHTML = `
+&lt;div class='goal-text'&gt;${g.text}&lt;/div&gt;
+&lt;div class='goal-meta'&gt;
+&lt;button class='btn ${g.done?'btn-light':'btn-success'}' onclick='toggleDone(${i})'&gt;${g.done?'已完成':'今日已完成'}&lt;/button&gt;
+&lt;/div&gt;
+`
+todayList.appendChild(item)
+})
+}
+
+let goals = JSON.parse(localStorage.getItem('myGoals')) || defaultGoals.map(t=&gt;({text:t,done:false}))
+
+function saveToStorage(){
+localStorage.setItem('myGoals',JSON.stringify(goals))
+}
+
+function toggleDone(index){
+goals[index].done = !goals[index].done
+saveToStorage()
+renderGoals(goals)
+}
+
+searchInput.addEventListener('input',(e)=&gt;{
+const kw = e.target.value.toLowerCase()
+const filtered = goals.filter(g=&gt;g.text.toLowerCase().includes(kw))
+renderGoals(filtered)
+})
+
+openModal.onclick = ()=&gt;{modal.style.display='flex'}
+closeModal.onclick = ()=&gt;{modal.style.display='none'}
+saveGoal.onclick = ()=&gt;{
+const t = goalContent.value.trim()
+if(!t)return
+goals.unshift({text:t,done:false})
+saveToStorage()
+renderGoals(goals)
+goalContent.value=''
+modal.style.display='none'
+}
+
+renderGoals(goals)
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;。</description><guid isPermaLink="true">https://taouy.github.io/post/Ta0uy.html</guid><pubDate>Sun, 12 Apr 2026 17:21:18 +0000</pubDate></item><item><title>test</title><link>https://taouy.github.io/post/test.html</link><description>测试
 
 。</description><guid isPermaLink="true">https://taouy.github.io/post/test.html</guid><pubDate>Sun, 05 Apr 2026 15:27:54 +0000</pubDate></item></channel></rss>
